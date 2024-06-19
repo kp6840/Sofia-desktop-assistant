@@ -1,0 +1,5 @@
+Download these modules - pip install pypiwin32.
+                         pip install pyttsx3
+                         pip install speechRecognition
+                         pip install wikipedia
+
