@@ -1,5 +1,10 @@
-Download these modules - pip install pypiwin32.
-                         pip install pyttsx3
+Download these modules - pip install pyttsx3
                          pip install speechRecognition
                          pip install wikipedia
+
+Import the above modules and these - datetime
+                                     webbrowser
+                                     os
+                                     smtplib
+                                     logging
 
