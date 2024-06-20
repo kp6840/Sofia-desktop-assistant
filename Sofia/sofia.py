@@ -1,19 +1,19 @@
-import pyttsx3 #pip install pyttsx3
-import speech_recognition as sr #pip install speechRecognition
+import pyttsx3 
 import datetime
-import wikipedia #pip install wikipedia
+import speech_recognition as sr
+import wikipedia
 import webbrowser
 import os
 import smtplib
+import logging
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
 
-
 def speak(audio):
-    engine.say(audio)
-    engine.runAndWait()
+  engine.say(audio)
+  engine.runAndWait()
 
 
 def wishMe():
@@ -27,9 +27,10 @@ def wishMe():
     else:
         speak("Good Evening!")  
 
-    speak("I am Sofia, Sir. Please tell me how may I help you")       
+    speak("I am Sofia Sir. Please tell me how may I help you")  
 
 def takeCommand():
+
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
@@ -45,60 +46,60 @@ def takeCommand():
         # print(e)    
         print("Say that again please...")  
         return "None"
-    return query
+    return query 
 
 def sendEmail(to, content):
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.ehlo()
-    server.starttls()
-    server.login('youremail@gmail.com', 'your-password')
-    server.sendmail('youremail@gmail.com', to, content)
-    server.close()
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.ehlo()
+        server.starttls()
+        # Use environment variables or a config file to get the credentials
+        server.login('khushparikh01@gmail.com', 'ogfrymscqowsexzf')
+        server.sendmail('khushparikh01@gmail.com', to, content)
+        server.close()
+        speak("Email has been sent!")
+    except Exception as e:
+        logging.exception("Error while sending email")
+        speak("Sorry my friend. I am not able to send this email")      
 
 if __name__ == "__main__":
-    wishMe()
-    while True:
-        query = takeCommand().lower()
+  wishMe()
+  while True:
+     query = takeCommand().lower()
 
-        if 'wikipedia' in query:
+     if 'wikipedia' in query:
             speak('Searching Wikipedia...')
             query = query.replace("wikipedia", "")
-            results = wikipedia.summary(query, sentences=2)
+            results = wikipedia.summary(query, sentences=3)
             speak("According to Wikipedia")
             print(results)
             speak(results)
 
-        elif 'open youtube' in query:
+     elif 'open youtube' in query:
             webbrowser.open("youtube.com")
 
-        elif 'open google' in query:
+     elif 'open google' in query:
             webbrowser.open("google.com")
 
-        elif 'open stackoverflow' in query:
-            webbrowser.open("stackoverflow.com")   
+     elif 'open stack overflow' in query:
+            webbrowser.open("stackoverflow.com")
 
+     elif 'open lead code' in query:
+            webbrowser.open("leetcode.com")
 
-        elif 'play music' in query:
-            music_dir = 'D:\\Non Critical\\songs\\Favorite Songs2'
+     elif 'play music' in query:
+            music_dir ="D:\\Music"
             songs = os.listdir(music_dir)
             print(songs)    
             os.startfile(os.path.join(music_dir, songs[0]))
 
-        elif 'the time' in query:
-            strTime = datetime.datetime.now().strftime("%H:%M:%S")    
-            speak(f"Sir, the time is {strTime}")
-
-        elif 'open code' in query:
-            codePath = "C:\\Users\\khush\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
-            os.startfile(codePath)
-
-        elif 'email to khush' in query:
+     elif 'send email' in query:
             try:
                 speak("What should I say?")
                 content = takeCommand()
-                to = "khushmail@gmail.com"    
+                to = "kp6840@srmist.edu.in"    
                 sendEmail(to, content)
                 speak("Email has been sent!")
             except Exception as e:
-                print(e)
-                speak("Sorry my friend . I am not able to send this email")    
+                logging.exception("Error while processing the email command")
+                speak("Sorry my friend. I am not able to send this email")    
